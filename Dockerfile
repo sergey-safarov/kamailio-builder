@@ -39,11 +39,11 @@ RUN set -e; \
         ${pkg_manager} install $(rpmspec -P kamailio.spec | grep BuildRequires | sed -r -e 's/BuildRequires:\s+//' -e 's/,//g' -e '/libphonenumber-devel/d' -e 's/systemd-mini/systemd/' | xargs); \
     fi; \
     rm -Rf /var/cache/dnf/* /var/cache/yum/* /var/cache/zypp/*; \
-    rm -f kamailio.spec \
+    rm -f kamailio.spec; \
     if [ ! -z "${rpm_extra_builds}" ]; then \
         echo "Building extra deps RPM packages"; \
         for i in ${rpm_extra_builds}; do rpmbuild --nocheck -ba rpm_extra_specs/${i}.spec; done \
-    fi \
+    fi; \
     if [ ! -z "${rpm_extra_builds}" ]; then \
         echo "Installing extra RPM deps"; \
         rpm -i $(find ~/rpmbuild/RPMS -type f \( -name "*.rpm" -not -name "*.src.rpm" \) | xargs); \
