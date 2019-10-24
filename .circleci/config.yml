@@ -85,6 +85,12 @@ jobs:
       base_image: "centos"
       image_tag: "7"
 
+  centos-8:
+    <<: *default
+    environment:
+      base_image: "centos"
+      image_tag: "8"
+
   opensuse_leap-42:
     <<: *default
     environment:
@@ -116,6 +122,8 @@ workflows:
       - centos-6:
           context: docker_creds
       - centos-7:
+          context: docker_creds
+      - centos-8:
           context: docker_creds
       - opensuse_leap-42:
           context: docker_creds
