@@ -21,11 +21,15 @@ RUN set -e; \
     if [ "${base_image}" == "centos" ]; then \
         extra_packages="epel-release"; \
     fi; \
-    if [ "${base_image}" == "centos" -a "${image_tag}" != "6" ]; then \
+    if [ "${base_image}" == "centos" -a "${image_tag}" == "7" ]; then \
         rpm_extra_builds="libphonenumber"; \
     fi; \
     if [ "${base_image}" == "fedora" ]; then \
         rpm_extra_builds="libphonenumber"; \
+    fi; \
+    if [ "${base_image}" == "centos" -a "${image_tag}" == "8" ]; then \
+        # Need enable additional repos \
+        sed -i -e 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-PowerTools.repo; \
     fi; \
     ${pkg_manager} update; \
     ${pkg_manager} install rpm-build gcc make wget bison flex which git ${extra_packages}; \
