@@ -47,8 +47,8 @@ RUN set -e; \
     fi; \
     ${pkg_manager} update; \
     ${pkg_manager} install rpm-build gcc make wget bison flex which git ${extra_packages}; \
-    wget https://raw.githubusercontent.com/kamailio/kamailio/master/pkg/kamailio/obs/kamailio.spec; \
-    sed -i -e 's/bcond_with cnxcc/bcond_without cnxcc/' -e 's/bcond_with redis/bcond_without redis/' kamailio.spec \
+    wget https://raw.githubusercontent.com/sergey-safarov/kamailio/master/pkg/kamailio/obs/kamailio.spec; \
+    sed -i -e 's/bcond_with cnxcc/bcond_without cnxcc/' -e 's/bcond_with redis/bcond_without redis/' kamailio.spec; \
     for i in ${rpm_extra_builds}; do ${pkg_manager} install $(rpmspec -P rpm_extra_specs/${i}.spec | grep BuildRequires | sed -r -e 's/BuildRequires:\s+//' -e 's/,//g' | xargs); done; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "6" ]; then \
         sed -i -e '/libphonenumber-devel/d' -e 's/systemd-mini/systemd/' kamailio.spec; \
