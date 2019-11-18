@@ -1,5 +1,5 @@
-ARG base_image="registry.redhat.io/ubi8"
-ARG image_tag="latest"
+ARG base_image="centos"
+ARG image_tag="8"
 
 FROM ${base_image}:${image_tag}
 ARG base_image
@@ -26,13 +26,14 @@ RUN set -e; \
     if [ "${base_image}" == "registry.redhat.io/ubi7" -o "${base_image}" == "registry.redhat.io/ubi8" ]; then \
         subscription-manager register --username="${rhel_username}" --password="${rhel_password}"; \
         subscription-manager attach; \
-        dnf install -y --enablerepo=codeready-builder-for-rhel-8-x86_64-rpms json-c-devel libmemcached-devel libmnl-devel librabbitmq-devel libunistring-devel lua-devel; \
-        extra_packages="epel-release"; \
     fi; \
     if [ "${base_image}" == "registry.redhat.io/ubi7" ]; then \
-        dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
+        yum-config-manager --enable rhel-7-server-optional-rpms; \
+        yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
+        rpm_extra_builds="libphonenumber"; \
     fi; \
     if [ "${base_image}" == "registry.redhat.io/ubi8" ]; then \
+        dnf config-manager --set-enabled codeready-builder-for-rhel-8-x86_64-rpms; \
         dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm; \
     fi; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "7" ]; then \
@@ -47,7 +48,7 @@ RUN set -e; \
     fi; \
     ${pkg_manager} update; \
     ${pkg_manager} install rpm-build gcc make wget bison flex which git ${extra_packages}; \
-    wget https://raw.githubusercontent.com/sergey-safarov/kamailio/master/pkg/kamailio/obs/kamailio.spec; \
+    wget https://raw.githubusercontent.com/kamailio/kamailio/master/pkg/kamailio/obs/kamailio.spec; \
     sed -i -e 's/bcond_with cnxcc/bcond_without cnxcc/' -e 's/bcond_with redis/bcond_without redis/' kamailio.spec; \
     for i in ${rpm_extra_builds}; do ${pkg_manager} install $(rpmspec -P rpm_extra_specs/${i}.spec | grep BuildRequires | sed -r -e 's/BuildRequires:\s+//' -e 's/,//g' | xargs); done; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "6" ]; then \
