@@ -66,7 +66,7 @@ RUN set -e; \
     rm -f kamailio.spec; \
     if [ ! -z "${rpm_extra_builds}" ]; then \
         echo "Building extra deps RPM packages"; \
-        for i in ${rpm_extra_builds}; do rpmbuild --nocheck -ba rpm_extra_specs/${i}.spec; done \
+        for i in ${rpm_extra_builds}; do rpmbuild --undefine _disable_source_fetch --nocheck -ba rpm_extra_specs/${i}.spec; done \
     fi; \
     if [ ! -z "${rpm_extra_builds}" ]; then \
         echo "Installing extra RPM deps"; \
