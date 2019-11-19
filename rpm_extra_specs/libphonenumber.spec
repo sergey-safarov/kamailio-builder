@@ -10,7 +10,7 @@ Summary:       Library to handle international phone numbers
 # cpp/src/phonenumbers/utf/utfdef.h
 License:       ASL 2.0 and BSD and MIT
 URL:           https://github.com/googlei18n/libphonenumber/
-Source0:       https://github.com/googlei18n/libphonenumber/archive/%{name}-%{version}.tar.gz
+Source0:       https://github.com/google/libphonenumber/archive/v%{version}/%{name}-v%{version}.tar.gz
 
 Requires: boost-thread
 BuildRequires: boost-thread
