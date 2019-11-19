@@ -1,7 +1,7 @@
 Name:          libphonenumber
 # Newer release require com.google.protobuf.nano available only on protobuf >= 3.0.0-alpha-1 
-Version:       8.10.6
-Release:       0%{?dist}
+Version:       8.10.7
+Release:       1%{?dist}
 Summary:       Library to handle international phone numbers
 # BSD:  cpp/src/phonenumbers/base/*
 # tools/cpp/src/base/*
@@ -10,10 +10,10 @@ Summary:       Library to handle international phone numbers
 # cpp/src/phonenumbers/utf/utfdef.h
 License:       ASL 2.0 and BSD and MIT
 URL:           https://github.com/googlei18n/libphonenumber/
-%undefine      _disable_source_fetch
-Source0:       https://github.com/google/libphonenumber/archive/v%{version}.tar.gz
-%define        SHA256SUM0 600f6a1984836800815f4370d00616f0a0f90c2b9140299dcc27807162431228
+Source0:       https://github.com/googlei18n/libphonenumber/archive/%{name}-%{version}.tar.gz
 
+Requires: boost-thread
+BuildRequires: boost-thread
 BuildRequires: boost-devel
 BuildRequires: cmake
 BuildRequires: gtest-devel
@@ -21,7 +21,6 @@ BuildRequires: libicu-devel
 BuildRequires: protobuf-compiler
 BuildRequires: protobuf-devel
 BuildRequires: re2-devel
-
 
 %description
 Google's common C++ library for parsing, formatting,
@@ -154,16 +153,9 @@ rm -rf javadoc debian
 #%mvn_build -s
 
 mkdir -p cpp/build
-CFLAGS="${CFLAGS:-%optflags}"
-CXXFLAGS="${CXXFLAGS:-%optflags}"
-#CFLAGS="${CFLAGS} -Wno-deprecated-declarations"
-#CXXFLAGS="${CXXFLAGS} -Wno-deprecated-declarations"
-export CFLAGS CXXFLAGS
-(
- cd cpp/build 
- %{__cmake} -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} -DLIB_INSTALL_DIR:PATH=%{_libdir} ..
-)
-make %{?_smp_mflags} -C cpp/build phonenumber phonenumber-shared
+cd cpp/build 
+%{cmake} ..
+%{make_build} -j 1 phonenumber phonenumber-shared
 
 %install
 make install DESTDIR=%{buildroot} -C cpp/build
@@ -171,17 +163,10 @@ find %{buildroot} -name '*.a' -delete
 find %{buildroot} -name '*.la' -delete
 
 %check
-CFLAGS="${CFLAGS:-%optflags}"
-CXXFLAGS="${CXXFLAGS:-%optflags}"
-#CFLAGS="${CFLAGS} -Wno-deprecated-declarations"
-#CXXFLAGS="${CXXFLAGS} -Wno-deprecated-declarations"
-export CFLAGS CXXFLAGS
-(
- cd cpp/build 
- %{__cmake} -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} -DLIB_INSTALL_DIR:PATH=%{_libdir} ..
- make %{?_smp_mflags} libphonenumber_test
- ./libphonenumber_test
-)
+cd cpp/build 
+%{cmake} ..
+%{make_build} libphonenumber_test
+./libphonenumber_test
 
 %post -p /sbin/ldconfig
 
@@ -224,3 +209,4 @@ export CFLAGS CXXFLAGS
 
 * Mon Mar 09 2015 gil cattaneo <puntogil@libero.it> 7.0.3-1
 - initial rpm
+
