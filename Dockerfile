@@ -27,24 +27,26 @@ RUN set -e; \
         subscription-manager register --username="${rhel_username}" --password="${rhel_password}"; \
         subscription-manager attach; \
     fi; \
+    if [ "${base_image}" == "registry.redhat.io/ubi8" ]; then \
+        dnf config-manager --set-enabled codeready-builder-for-rhel-8-x86_64-rpms; \
+        dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm; \
+        rpm_extra_builds="libphonenumber"; \
+    fi; \
     if [ "${base_image}" == "registry.redhat.io/ubi7" ]; then \
         yum-config-manager --enable rhel-7-server-optional-rpms; \
         yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
         rpm_extra_builds="libphonenumber"; \
     fi; \
-    if [ "${base_image}" == "registry.redhat.io/ubi8" ]; then \
-        dnf config-manager --set-enabled codeready-builder-for-rhel-8-x86_64-rpms; \
-        dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm; \
+    if [ "${base_image}" == "centos" -a "${image_tag}" == "8" ]; then \
+        # Need enable additional repos \
+        sed -i -e 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-PowerTools.repo; \
+        rpm_extra_builds="libphonenumber"; \
     fi; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "7" ]; then \
         rpm_extra_builds="libphonenumber"; \
     fi; \
     if [ "${base_image}" == "fedora" ]; then \
         rpm_extra_builds="libphonenumber"; \
-    fi; \
-    if [ "${base_image}" == "centos" -a "${image_tag}" == "8" ]; then \
-        # Need enable additional repos \
-        sed -i -e 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-PowerTools.repo; \
     fi; \
     ${pkg_manager} update; \
     ${pkg_manager} install rpm-build gcc make wget bison flex which git ${extra_packages}; \
