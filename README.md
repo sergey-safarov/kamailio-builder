@@ -8,7 +8,7 @@ export image_tag=8
 export rhel_username=${your_username}
 export rhel_password=${your_password}
 docker build \
-    --build-arg registry.redhat.io/ubi${image_tag} \
+    --build-arg base_image=registry.redhat.io/ubi${image_tag} \
     --build-arg image_tag=latest \
     --build-arg rhel_username=${rhel_username} \
     --build-arg rhel_password=${rhel_password} \
