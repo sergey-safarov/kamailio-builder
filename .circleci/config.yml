@@ -55,12 +55,6 @@ jobs:
                 echo "current 'kamailio-builder:${tag}' image is freesh, skiping image update";
             fi
 
-  fedora-29:
-    <<: *default
-    environment:
-      base_image: "fedora"
-      image_tag: "29"
-
   fedora-30:
     <<: *default
     environment:
@@ -72,6 +66,18 @@ jobs:
     environment:
       base_image: "fedora"
       image_tag: "31"
+
+  fedora-32:
+    <<: *default
+    environment:
+      base_image: "fedora"
+      image_tag: "32"
+
+  fedora-33:
+    <<: *default
+    environment:
+      base_image: "fedora"
+      image_tag: "33"
 
   centos-6:
     <<: *default
@@ -113,11 +119,13 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - fedora-29:
-          context: docker_creds
       - fedora-30:
           context: docker_creds
       - fedora-31:
+          context: docker_creds
+      - fedora-32:
+          context: docker_creds
+      - fedora-33:
           context: docker_creds
       - centos-6:
           context: docker_creds
