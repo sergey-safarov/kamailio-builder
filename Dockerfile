@@ -48,7 +48,7 @@ RUN set -e; \
         extra_packages="epel-release devtoolset-9"; \
         rpm_extra_builds="libphonenumber"; \
     fi; \
-    if [ "${base_image}" == "fedora" ]; then \
+    if [ "${base_image}" == "fedora" -a "${image_tag}" <= "33"  ]; then \
         rpm_extra_builds="libphonenumber"; \
     fi; \
     ${pkg_manager} update; \
