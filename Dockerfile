@@ -55,6 +55,7 @@ RUN set -e; \
     ${pkg_manager} install rpm-build gcc make wget bison flex which git ${extra_packages}; \
     if [ ! -z "${rpm_extra_builds}" ]; then \
         echo "Building extra deps RPM packages"; \
+        for i in ${rpm_extra_builds}; do ${pkg_manager} install $(rpmspec -P rpm_extra_specs/${i}.spec | grep BuildRequires | sed -r -e 's/BuildRequires:\s+//' -e 's/,//g' | xargs); done; \
         for i in ${rpm_extra_builds}; do rpmbuild --undefine _disable_source_fetch --nocheck -ba rpm_extra_specs/${i}.spec; done \
     fi; \
     if [ ! -z "${rpm_extra_builds}" ]; then \
