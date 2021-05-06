@@ -53,21 +53,6 @@ RUN set -e; \
     fi; \
     ${pkg_manager} update; \
     ${pkg_manager} install rpm-build gcc make wget bison flex which git ${extra_packages}; \
-    wget https://raw.githubusercontent.com/kamailio/kamailio/master/pkg/kamailio/obs/kamailio.spec; \
-    for i in ${rpm_extra_builds}; do ${pkg_manager} install $(rpmspec -P rpm_extra_specs/${i}.spec | grep BuildRequires | sed -r -e 's/BuildRequires:\s+//' -e 's/,//g' | xargs); done; \
-    if [ "${base_image}" == "centos" -a "${image_tag}" == "6" ]; then \
-        sed -i -e 's/libphonenumber-devel //' -e 's/systemd-mini/systemd/' kamailio.spec; \
-        yum -y install yum-utils; \
-        yum-builddep -y kamailio.spec; \
-    else \
-        ${pkg_manager} install $(rpmspec -P kamailio.spec | grep BuildRequires | sed -r -e 's/BuildRequires:\s+//' -e 's/,//g' -e 's/libphonenumber-devel //' -e 's/systemd-mini/systemd/' | xargs); \
-    fi; \
-    if [ "${base_image}" == "registry.redhat.io/ubi7" -o "${base_image}" == "registry.redhat.io/ubi8" ]; then \
-        subscription-manager remove --all; \
-        subscription-manager unregister; \
-    fi; \
-    rm -Rf /var/cache/dnf/* /var/cache/yum/* /var/cache/zypp/*; \
-    rm -f kamailio.spec; \
     if [ ! -z "${rpm_extra_builds}" ]; then \
         echo "Building extra deps RPM packages"; \
         for i in ${rpm_extra_builds}; do rpmbuild --undefine _disable_source_fetch --nocheck -ba rpm_extra_specs/${i}.spec; done \
@@ -79,4 +64,19 @@ RUN set -e; \
         mv ~/rpmbuild/RPMS /deps; \
         mv ~/rpmbuild/SRPMS /deps; \
         rm -Rf ~/rpmbuild; \
-    fi
+    fi; \
+    wget https://raw.githubusercontent.com/kamailio/kamailio/master/pkg/kamailio/obs/kamailio.spec; \
+    for i in ${rpm_extra_builds}; do ${pkg_manager} install $(rpmspec -P rpm_extra_specs/${i}.spec | grep BuildRequires | sed -r -e 's/BuildRequires:\s+//' -e 's/,//g' | xargs); done; \
+    if [ "${base_image}" == "centos" -a "${image_tag}" == "6" ]; then \
+        sed -i -e 's/systemd-mini/systemd/' kamailio.spec; \
+        yum -y install yum-utils; \
+        yum-builddep -y kamailio.spec; \
+    else \
+        ${pkg_manager} install $(rpmspec -P kamailio.spec | grep BuildRequires | sed -r -e 's/BuildRequires:\s+//' -e 's/,//g' -e 's/systemd-mini/systemd/' | xargs); \
+    fi; \
+    if [ "${base_image}" == "registry.redhat.io/ubi7" -o "${base_image}" == "registry.redhat.io/ubi8" ]; then \
+        subscription-manager remove --all; \
+        subscription-manager unregister; \
+    fi; \
+    rm -Rf /var/cache/dnf/* /var/cache/yum/* /var/cache/zypp/*; \
+    rm -f kamailio.spec
