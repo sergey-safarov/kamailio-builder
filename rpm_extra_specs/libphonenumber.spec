@@ -1,6 +1,6 @@
 Name:          libphonenumber
 # Newer release require com.google.protobuf.nano available only on protobuf >= 3.0.0-alpha-1 
-Version:       8.10.7
+Version:       8.12.24
 Release:       1%{?dist}
 Summary:       Library to handle international phone numbers
 # BSD:  cpp/src/phonenumbers/base/*
@@ -21,6 +21,11 @@ BuildRequires: libicu-devel
 BuildRequires: protobuf-compiler
 BuildRequires: protobuf-devel
 BuildRequires: re2-devel
+%if 0%{?rhel} == 7
+# latest libphonenumber requires more recent GCC
+# yum install centos-release-scl && yum install devtoolset-9
+BuildRequires: devtoolset-7
+%endif
 
 %description
 Google's common C++ library for parsing, formatting,
@@ -149,6 +154,10 @@ rm -rf javadoc debian
 # TODO JavaScript library. Skip for now, use unavailable build tools: closure-library, closure-linter
 
 %build
+%if 0%{?rhel} == 7
+# latest libphonenumber requires more recent GCC
+. /opt/rh/devtoolset-7/enable
+%endif
 
 #%mvn_build -s
 
@@ -158,6 +167,11 @@ cd cpp/build
 %{make_build} -j 1 phonenumber phonenumber-shared
 
 %install
+%if 0%{?rhel} == 7
+# latest libphonenumber requires more recent GCC
+. /opt/rh/devtoolset-7/enable
+%endif
+
 make install DESTDIR=%{buildroot} -C cpp/build
 find %{buildroot} -name '*.a' -delete
 find %{buildroot} -name '*.la' -delete
