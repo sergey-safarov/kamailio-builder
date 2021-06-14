@@ -15,6 +15,20 @@ docker build \
     -t ${repo_owner}/kamailio-builder:${base_image}-${image_tag} .
 ```
 
+To build image for OpenSUSEneed define variables `repo_owner`, `base_image`, `image_tag` and then start build image like
+
+```
+export repo_owner=safarov
+export base_image=opensuse/leap
+export image_tag=15
+docker build \
+    --no-cache \
+    --build-arg base_image=${base_image} \
+    --build-arg image_tag=${image_tag} \
+    --build-arg image_tag=latest \
+    -t ${repo_owner}/kamailio-builder:opensuse-${image_tag} .
+```
+
 To build image need to define environement variables `repo_owner`, `base_image`, `image_tag` and then start build image like
 
 ```sh
@@ -26,3 +40,18 @@ docker build \
     --build-arg image_tag=${image_tag} \
     -t ${repo_owner}/kamailio-builder:${base_image}-${image_tag} .
 ```
+
+Suported dist
+
+| dist                | version |
+|---------------------|---------|
+| rhel                | 8       |
+| rhel                | 7       |
+| centos              | 8       |
+| centos              | 7       |
+| fedora              | 35      |
+| fedora              | 34      |
+| fedora              | 33      |
+| fedora              | 32      |
+| opensuse/leap       | 15      |
+| opensuse/tumbleweed | latest  |

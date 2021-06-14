@@ -50,6 +50,9 @@ RUN set -e; \
     if [ "${base_image}" == "fedora" -a "${image_tag}" -lt "33"  ]; then \
         rpm_extra_builds="libphonenumber"; \
     fi; \
+    if [ "${base_image}" == "opensuse/tumbleweed" -a "${image_tag}" == "latest"  ]; then \
+        extra_packages="system-group-hardware"; \
+    fi; \
     ${pkg_manager} update; \
     ${pkg_manager} install rpm-build gcc gcc-c++ make wget bison flex which git ${extra_packages}; \
     if [ ! -z "${rpm_extra_builds}" ]; then \
