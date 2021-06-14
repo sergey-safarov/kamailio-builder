@@ -27,25 +27,24 @@ RUN set -e; \
     if [ "${base_image}" == "registry.redhat.io/ubi8" ]; then \
         dnf config-manager --set-enabled codeready-builder-for-rhel-8-x86_64-rpms; \
         dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm; \
-        extra_packages="gcc-toolset-9"; \
         rpm_extra_builds="libphonenumber"; \
     fi; \
     if [ "${base_image}" == "registry.redhat.io/ubi7" ]; then \
         yum-config-manager --enable rhel-7-server-optional-rpms; \
+        yum-config-manager --enable rhel-7-server-devtools-rpms; \
         yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
-        extra_packages="devtoolset-9"; \
         rpm_extra_builds="libphonenumber"; \
     fi; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "8" ]; then \
         # Need enable additional repos \
         sed -i -e 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-Linux-PowerTools.repo ; \
         sed -i -e 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-Linux-Devel.repo ; \
-        extra_packages="epel-release gcc-toolset-9"; \
+        extra_packages="epel-release"; \
         rpm_extra_builds="libphonenumber"; \
     fi; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "7" ]; then \
         yum install -y centos-release-scl; \
-        extra_packages="epel-release devtoolset-9"; \
+        extra_packages="epel-release"; \
         rpm_extra_builds="libphonenumber"; \
     fi; \
     if [ "${base_image}" == "fedora" -a "${image_tag}" -lt "33"  ]; then \
