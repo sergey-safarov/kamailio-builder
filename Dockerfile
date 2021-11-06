@@ -40,15 +40,16 @@ RUN set -e; \
         sed -i -e 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-Linux-PowerTools.repo ; \
         sed -i -e 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-Linux-Devel.repo ; \
         extra_packages="epel-release"; \
-        rpm_extra_builds="libphonenumber"; \
+        rpm_extra_builds="libnats libphonenumber"; \
     fi; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "7" ]; then \
         yum install -y centos-release-scl; \
         extra_packages="epel-release"; \
         rpm_extra_builds="libphonenumber"; \
     fi; \
-    if [ "${base_image}" == "fedora" -a "${image_tag}" -lt "33"  ]; then \
-        rpm_extra_builds="libphonenumber"; \
+    if [ "${base_image}" == "fedora" ]; then \
+        mkdir -p ~/rpmbuild/SOURCES; \
+        rpm_extra_builds="libnats"; \
     fi; \
     if [ "${base_image}" == "opensuse/tumbleweed" -a "${image_tag}" == "latest"  ]; then \
         extra_packages="system-group-hardware"; \
