@@ -1,4 +1,4 @@
-Tu build image for RHEL-7, RHEL-8 need define variables `repo_owner`, `base_image`, `image_tag`, `rhel_username`, `rhel_password` and
+To build image for RHEL-7, RHEL-8 need define variables `repo_owner`, `base_image`, `image_tag`, `rhel_username`, `rhel_password` and
 then start build image like
 
 ```sh
