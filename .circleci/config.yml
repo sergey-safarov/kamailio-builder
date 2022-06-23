@@ -10,7 +10,7 @@ jobs:
           name: Install Docker client
           command: |
             set -x
-            VER="19.03.2"
+            VER="20.10.9"
             apk add curl
             curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
             tar -xz -C /tmp -f /tmp/docker-$VER.tgz
@@ -18,10 +18,11 @@ jobs:
       - run:
           name: Is builder image avaialable
           command: |
-            tag=$(echo ${base_image}-${image_tag} | sed -e 's|/|_|')
+            tag=$(echo ${base_image}-${image_tag} | sed -e 's|safarov/||' -e 's|/|_|')
             if ! docker pull ${docker_repo_owner}/kamailio-builder:${tag}; then
                 echo "builder image not exist, creating first time"
                 docker build \
+                  --security-opt seccomp=unconfined \
                   --build-arg base_image=${base_image} \
                   --build-arg image_tag=${image_tag} \
                   -t ${docker_repo_owner}/kamailio-builder:${tag} .
@@ -34,7 +35,7 @@ jobs:
       - run:
           name: Is need update builder image
           command: |
-            tag=$(echo ${base_image}-${image_tag} | sed -e 's|/|_|')
+            tag=$(echo ${base_image}-${image_tag} | sed -e 's|safarov/||' -e 's|/|_|')
             chmod 755 .circleci/is_fresh_image.sh
             docker create --rm \
                 --name check_updates \
@@ -45,6 +46,7 @@ jobs:
                 echo "refreshing builder image"
                 docker rmi ${docker_repo_owner}/kamailio-builder:${tag}
                 docker build \
+                  --security-opt seccomp=unconfined \
                   --build-arg base_image=${base_image} \
                   --build-arg image_tag=${image_tag} \
                   -t ${docker_repo_owner}/kamailio-builder:${tag} .
@@ -130,6 +132,8 @@ workflows:
       - centos-7:
           context: docker_creds
       - centos-8:
+          context: docker_creds
+      - centos-9:
           context: docker_creds
       - opensuse_leap-42:
           context: docker_creds

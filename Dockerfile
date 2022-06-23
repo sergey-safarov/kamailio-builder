@@ -35,12 +35,35 @@ RUN set -e; \
         yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
         rpm_extra_builds="libphonenumber"; \
     fi; \
-    if [ "${base_image}" == "centos" -a "${image_tag}" == "8" ]; then \
+    if [ "${base_image}" == "safarov/centos" ]; then \
         # Need enable additional repos \
-        sed -i -e 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-Linux-PowerTools.repo ; \
-        sed -i -e 's/enabled=0/enabled=1/' /etc/yum.repos.d/CentOS-Linux-Devel.repo ; \
+        dnf -y install 'dnf-command(config-manager)'; \
         extra_packages="epel-release"; \
-        rpm_extra_builds="libnats libphonenumber"; \
+        rpm_extra_builds="libnats"; \
+        dnf -y install wget rpm-build epel-release; \
+        wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/36/Everything/source/tree/Packages/l/libphonenumber-8.12.11-11.fc36.src.rpm; \
+        if [ "${image_tag}" == "8" ]; then \
+                dnf config-manager --set-enabled powertools; \
+                dnf -y builddep libphonenumber-8.12.11-11.fc36.src.rpm; \
+                rpmbuild --define "debug_package %{nil}" --rebuild libphonenumber-8.12.11-11.fc36.src.rpm; \
+        else \
+                dnf config-manager --set-enabled crb; \
+                dnf -y builddep libphonenumber-8.12.11-11.fc36.src.rpm; \
+                rpmbuild --rebuild libphonenumber-8.12.11-11.fc36.src.rpm; \
+                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/36/Everything/source/tree/Packages/g/GeoIP-GeoLite-data-2018.06-9.fc36.src.rpm; \
+                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/36/Everything/source/tree/Packages/g/GeoIP-1.6.12-11.fc36.src.rpm; \
+                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/36/Everything/source/tree/Packages/f/freeradius-client-1.1.7-25.fc36.src.rpm; \
+                dnf -y builddep freeradius-client-1.1.7-25.fc36.src.rpm; \
+                rpmbuild --rebuild freeradius-client-1.1.7-25.fc36.src.rpm; \
+                dnf -y builddep GeoIP-GeoLite-data-2018.06-9.fc36.src.rpm; \
+                rpmbuild --rebuild GeoIP-GeoLite-data-2018.06-9.fc36.src.rpm; \
+                dnf install -y ~/rpmbuild/RPMS/noarch/GeoIP-GeoLite-data-*.noarch.rpm; \
+                dnf -y builddep GeoIP-1.6.12-11.fc36.src.rpm; \
+                rpmbuild --rebuild GeoIP-1.6.12-11.fc36.src.rpm; \
+                rm -f *.rpm; \
+                dnf -y remove GeoIP-GeoLite-data*; \
+        fi; \
+        rm -f *.rpm; \
     fi; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "7" ]; then \
         yum install -y centos-release-scl; \
