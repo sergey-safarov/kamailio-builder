@@ -24,7 +24,6 @@ jobs:
             if ! docker pull ${docker_repo_owner}/kamailio-builder:${tag}; then
                 echo "builder image not exist, creating first time"
                 docker build \
-                  --security-opt seccomp=unconfined \
                   --build-arg base_image=${base_image} \
                   --build-arg image_tag=${image_tag} \
                   -t ${docker_repo_owner}/kamailio-builder:${tag} .
@@ -48,7 +47,6 @@ jobs:
                 echo "refreshing builder image"
                 docker rmi ${docker_repo_owner}/kamailio-builder:${tag}
                 docker build \
-                  --security-opt seccomp=unconfined \
                   --build-arg base_image=${base_image} \
                   --build-arg image_tag=${image_tag} \
                   -t ${docker_repo_owner}/kamailio-builder:${tag} .
