@@ -57,23 +57,17 @@ jobs:
                 echo "current 'kamailio-builder:${tag}' image is freesh, skiping image update";
             fi
 
-  fedora-33:
+  fedora-37:
     <<: *default
     environment:
       base_image: "fedora"
-      image_tag: "33"
+      image_tag: "37"
 
-  fedora-34:
+  fedora-36:
     <<: *default
     environment:
       base_image: "fedora"
-      image_tag: "34"
-
-  fedora-35:
-    <<: *default
-    environment:
-      base_image: "fedora"
-      image_tag: "35"
+      image_tag: "36"
 
   centos-6:
     <<: *default
@@ -99,12 +93,6 @@ jobs:
       base_image: "safarov/centos"
       image_tag: "9"
 
-  opensuse_leap-42:
-    <<: *default
-    environment:
-      base_image: "opensuse/leap"
-      image_tag: "42"
-
   opensuse_leap-15:
     <<: *default
     environment:
@@ -121,11 +109,9 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - fedora-33:
+      - fedora-37:
           context: docker_creds
-      - fedora-34:
-          context: docker_creds
-      - fedora-35:
+      - fedora-36:
           context: docker_creds
       - centos-6:
           context: docker_creds
@@ -134,8 +120,6 @@ workflows:
       - centos-8:
           context: docker_creds
       - centos-9:
-          context: docker_creds
-      - opensuse_leap-42:
           context: docker_creds
       - opensuse_leap-15:
           context: docker_creds
