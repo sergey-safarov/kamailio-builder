@@ -41,25 +41,26 @@ RUN set -e; \
         extra_packages="epel-release"; \
         rpm_extra_builds="libnats"; \
         dnf -y install wget rpm-build epel-release; \
-        wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/36/Everything/source/tree/Packages/l/libphonenumber-8.12.11-11.fc36.src.rpm; \
+        wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/37/Everything/source/tree/Packages/l/libphonenumber-8.12.11-15.fc37.src.rpm; \
         if [ "${image_tag}" == "8" ]; then \
                 dnf config-manager --set-enabled powertools; \
-                dnf -y builddep libphonenumber-8.12.11-11.fc36.src.rpm; \
-                rpmbuild --define "debug_package %{nil}" --rebuild libphonenumber-8.12.11-11.fc36.src.rpm; \
+                dnf -y builddep libphonenumber-*.src.rpm; \
+                rpmbuild --define "debug_package %{nil}" --rebuild libphonenumber-*.src.rpm; \
         else \
                 dnf config-manager --set-enabled crb; \
-                dnf -y builddep libphonenumber-8.12.11-11.fc36.src.rpm; \
-                rpmbuild --rebuild libphonenumber-8.12.11-11.fc36.src.rpm; \
-                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/36/Everything/source/tree/Packages/g/GeoIP-GeoLite-data-2018.06-9.fc36.src.rpm; \
-                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/36/Everything/source/tree/Packages/g/GeoIP-1.6.12-11.fc36.src.rpm; \
-                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/36/Everything/source/tree/Packages/f/freeradius-client-1.1.7-25.fc36.src.rpm; \
-                dnf -y builddep freeradius-client-1.1.7-25.fc36.src.rpm; \
-                rpmbuild --rebuild freeradius-client-1.1.7-25.fc36.src.rpm; \
-                dnf -y builddep GeoIP-GeoLite-data-2018.06-9.fc36.src.rpm; \
-                rpmbuild --rebuild GeoIP-GeoLite-data-2018.06-9.fc36.src.rpm; \
+                dnf -y builddep libphonenumber-*.src.rpm; \
+                rpmbuild --rebuild libphonenumber-*.src.rpm; \
+                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/37/Everything/source/tree/Packages/f/freeradius-client-1.1.7-26.fc37.src.rpm; \
+                dnf -y builddep freeradius-client-*.src.rpm; \
+                rpmbuild --rebuild freeradius-client-*.src.rpm; \
+                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/37/Everything/source/tree/Packages/g/GeoIP-GeoLite-data-2018.06-10.fc37.src.rpm; \
+                dnf -y builddep GeoIP-GeoLite-data-*.src.rpm; \
+                rpmbuild --rebuild GeoIP-GeoLite-data-*.src.rpm; \
                 dnf install -y ~/rpmbuild/RPMS/noarch/GeoIP-GeoLite-data-*.noarch.rpm; \
-                dnf -y builddep GeoIP-1.6.12-11.fc36.src.rpm; \
-                rpmbuild --rebuild GeoIP-1.6.12-11.fc36.src.rpm; \
+                rm -f GeoIP-*.src.rpm; \
+                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/37/Everything/source/tree/Packages/g/GeoIP-1.6.12-12.fc37.src.rpm; \
+                dnf -y builddep GeoIP-*.src.rpm; \
+                rpmbuild --rebuild GeoIP-*.src.rpm; \
                 rm -f *.rpm; \
                 dnf -y remove GeoIP-GeoLite-data*; \
         fi; \
