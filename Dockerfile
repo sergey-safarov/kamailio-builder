@@ -71,6 +71,15 @@ RUN set -e; \
         extra_packages="epel-release"; \
         rpm_extra_builds="libphonenumber"; \
     fi; \
+    if [ "${base_image}" == "centos" -a "${image_tag}" == "6" ]; then \
+        extra_packages="epel-release"; \
+        sed -i \
+          -e '/mirrorlist/d' \
+          -e 's/^#baseurl/baseurl/' \
+          -e 's|http://mirror.centos.org/centos|https://vault.centos.org|' \
+          -e 's/$releasever/6.10/' \
+          /etc/yum.repos.d/*; \
+    fi; \
     if [ "${base_image}" == "fedora" ]; then \
         mkdir -p ~/rpmbuild/SOURCES; \
         rpm_extra_builds="libnats"; \
