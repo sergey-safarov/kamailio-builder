@@ -63,11 +63,11 @@ jobs:
       base_image: "fedora"
       image_tag: "37"
 
-  fedora-36:
+  fedora-38:
     <<: *default
     environment:
       base_image: "fedora"
-      image_tag: "36"
+      image_tag: "38"
 
   centos-6:
     <<: *default
@@ -111,7 +111,7 @@ workflows:
     jobs:
       - fedora-37:
           context: docker_creds
-      - fedora-36:
+      - fedora-38:
           context: docker_creds
       - centos-6:
           context: docker_creds
