@@ -27,7 +27,7 @@ RUN set -e; \
     if [ "${base_image}" == "registry.redhat.io/ubi8" ]; then \
         dnf config-manager --set-enabled codeready-builder-for-rhel-8-x86_64-rpms; \
         dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm; \
-        rpm_extra_builds="libphonenumber"; \
+        rpm_extra_builds="libphonenumber libks"; \
     fi; \
     if [ "${base_image}" == "registry.redhat.io/ubi7" ]; then \
         yum-config-manager --enable rhel-7-server-optional-rpms; \
@@ -39,7 +39,7 @@ RUN set -e; \
         # Need enable additional repos \
         dnf -y install 'dnf-command(config-manager)'; \
         extra_packages="epel-release"; \
-        rpm_extra_builds="libnats"; \
+        rpm_extra_builds="libnats libks"; \
         dnf -y install wget rpm-build epel-release; \
         wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/37/Everything/source/tree/Packages/l/libphonenumber-8.12.11-15.fc37.src.rpm; \
         if [ "${image_tag}" == "8" ]; then \
@@ -82,7 +82,7 @@ RUN set -e; \
     fi; \
     if [ "${base_image}" == "fedora" ]; then \
         mkdir -p ~/rpmbuild/SOURCES; \
-        rpm_extra_builds="libnats"; \
+        rpm_extra_builds="libnats libks"; \
     fi; \
     if [ "${base_image}" == "opensuse/tumbleweed" -a "${image_tag}" == "latest"  ]; then \
         extra_packages="system-group-hardware"; \
