@@ -38,7 +38,7 @@ RUN set -e; \
     if [ "${base_image}" == "safarov/centos" ]; then \
         # Need enable additional repos \
         dnf -y install 'dnf-command(config-manager)'; \
-        extra_packages="epel-release"; \
+        extra_packages="epel-release pcre-devel"; \
         rpm_extra_builds="libnats libks wolfssl"; \
         dnf -y install wget rpm-build epel-release; \
         wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/37/Everything/source/tree/Packages/l/libphonenumber-8.12.11-15.fc37.src.rpm; \
@@ -68,11 +68,11 @@ RUN set -e; \
     fi; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "7" ]; then \
         yum install -y centos-release-scl; \
-        extra_packages="epel-release"; \
+        extra_packages="epel-release pcre-devel"; \
         rpm_extra_builds="libphonenumber wolfssl"; \
     fi; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "6" ]; then \
-        extra_packages="epel-release"; \
+        extra_packages="epel-release pcre-devel"; \
         sed -i \
           -e '/mirrorlist/d' \
           -e 's/^#baseurl/baseurl/' \
@@ -85,7 +85,7 @@ RUN set -e; \
         rpm_extra_builds="libnats libks wolfssl"; \
     fi; \
     if [ "${base_image}" == "opensuse/tumbleweed" -a "${image_tag}" == "latest"  ]; then \
-        extra_packages="system-group-hardware"; \
+        extra_packages="system-group-hardware pcre-devel"; \
     fi; \
     ${pkg_manager} update; \
     ${pkg_manager} install rpm-build gcc gcc-c++ make wget bison flex which git ${extra_packages}; \
