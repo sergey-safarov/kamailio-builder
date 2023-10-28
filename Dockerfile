@@ -27,19 +27,19 @@ RUN set -e; \
     if [ "${base_image}" == "registry.redhat.io/ubi8" ]; then \
         dnf config-manager --set-enabled codeready-builder-for-rhel-8-x86_64-rpms; \
         dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm; \
-        rpm_extra_builds="libphonenumber libks"; \
+        rpm_extra_builds="libphonenumber libks wolfssl"; \
     fi; \
     if [ "${base_image}" == "registry.redhat.io/ubi7" ]; then \
         yum-config-manager --enable rhel-7-server-optional-rpms; \
         yum-config-manager --enable rhel-7-server-devtools-rpms; \
         yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
-        rpm_extra_builds="libphonenumber"; \
+        rpm_extra_builds="libphonenumber wolfssl"; \
     fi; \
     if [ "${base_image}" == "safarov/centos" ]; then \
         # Need enable additional repos \
         dnf -y install 'dnf-command(config-manager)'; \
         extra_packages="epel-release"; \
-        rpm_extra_builds="libnats libks"; \
+        rpm_extra_builds="libnats libks wolfssl"; \
         dnf -y install wget rpm-build epel-release; \
         wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/37/Everything/source/tree/Packages/l/libphonenumber-8.12.11-15.fc37.src.rpm; \
         if [ "${image_tag}" == "8" ]; then \
@@ -69,7 +69,7 @@ RUN set -e; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "7" ]; then \
         yum install -y centos-release-scl; \
         extra_packages="epel-release"; \
-        rpm_extra_builds="libphonenumber"; \
+        rpm_extra_builds="libphonenumber wolfssl"; \
     fi; \
     if [ "${base_image}" == "centos" -a "${image_tag}" == "6" ]; then \
         extra_packages="epel-release"; \
@@ -82,7 +82,7 @@ RUN set -e; \
     fi; \
     if [ "${base_image}" == "fedora" ]; then \
         mkdir -p ~/rpmbuild/SOURCES; \
-        rpm_extra_builds="libnats libks"; \
+        rpm_extra_builds="libnats libks wolfssl"; \
     fi; \
     if [ "${base_image}" == "opensuse/tumbleweed" -a "${image_tag}" == "latest"  ]; then \
         extra_packages="system-group-hardware"; \
