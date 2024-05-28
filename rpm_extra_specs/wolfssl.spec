@@ -49,6 +49,7 @@ fi
 %install
 %{__rm} -rf %{buildroot}
 %{__make} install  DESTDIR="%{buildroot}" AM_INSTALL_PROGRAM_FLAGS=""
+%{__install} -m 0644 wolfssl/options.h %{buildroot}/usr/include/wolfssl/options.h
 %{__rm} -f %{buildroot}/%{_libdir}/libwolfssl.la
 %{__rm} -f %{buildroot}/%{_libdir}/libwolfssl.a
 
