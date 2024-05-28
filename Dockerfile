@@ -41,7 +41,7 @@ RUN set -e; \
         extra_packages="epel-release pcre-devel"; \
         rpm_extra_builds="libnats libks wolfssl"; \
         dnf -y install wget rpm-build epel-release; \
-        wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/37/Everything/source/tree/Packages/l/libphonenumber-8.12.11-15.fc37.src.rpm; \
+        wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/40/Everything/source/tree/Packages/l/libphonenumber-8.13.30-1.fc40.src.rpm; \
         if [ "${image_tag}" == "8" ]; then \
                 dnf config-manager --set-enabled powertools; \
                 dnf -y builddep libphonenumber-*.src.rpm; \
@@ -50,15 +50,15 @@ RUN set -e; \
                 dnf config-manager --set-enabled crb; \
                 dnf -y builddep libphonenumber-*.src.rpm; \
                 rpmbuild --rebuild libphonenumber-*.src.rpm; \
-                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/37/Everything/source/tree/Packages/f/freeradius-client-1.1.7-26.fc37.src.rpm; \
+                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/40/Everything/source/tree/Packages/f/freeradius-client-1.1.7-31.fc40.src.rpm; \
                 dnf -y builddep freeradius-client-*.src.rpm; \
                 rpmbuild --rebuild freeradius-client-*.src.rpm; \
-                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/37/Everything/source/tree/Packages/g/GeoIP-GeoLite-data-2018.06-10.fc37.src.rpm; \
+                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/40/Everything/source/tree/Packages/g/GeoIP-GeoLite-data-2018.06-16.fc40.src.rpm; \
                 dnf -y builddep GeoIP-GeoLite-data-*.src.rpm; \
                 rpmbuild --rebuild GeoIP-GeoLite-data-*.src.rpm; \
                 dnf install -y ~/rpmbuild/RPMS/noarch/GeoIP-GeoLite-data-*.noarch.rpm; \
                 rm -f GeoIP-*.src.rpm; \
-                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/37/Everything/source/tree/Packages/g/GeoIP-1.6.12-12.fc37.src.rpm; \
+                wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/40/Everything/source/tree/Packages/g/GeoIP-1.6.12-18.fc40.src.rpm; \
                 dnf -y builddep GeoIP-*.src.rpm; \
                 rpmbuild --rebuild GeoIP-*.src.rpm; \
                 rm -f *.rpm; \
