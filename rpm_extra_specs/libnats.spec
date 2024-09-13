@@ -2,7 +2,7 @@
 %define debug_package %{nil}
 
 Name:          libnats
-Version:       3.1.1
+Version:       3.8.2
 Release:       1%{?dist}
 Summary:       NATS & NATS Streaming - C Client
 License:       ASL 2.0
@@ -48,7 +48,7 @@ find %{buildroot} -name '*.a' -delete
 %{_includedir}/nats/*.h
 %{_includedir}/nats/adapters/*.h
 %{_libdir}/pkgconfig/%{name}.pc
-%{_prefix}/lib/cmake/cnats/*.cmake
+%{_libdir}/cmake/cnats/*.cmake
 
 %changelog
 * Sat Nov 06 2021 Sergey Safarov <s.safarov@gmail.com> 3.1.1
