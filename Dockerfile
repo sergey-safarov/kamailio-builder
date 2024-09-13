@@ -36,16 +36,22 @@ RUN set -e; \
         rpm_extra_builds="libphonenumber wolfssl"; \
     fi; \
     if [ "${base_image}" == "safarov/centos" ]; then \
+	if [ "${image_tag}" == "8" ]; then \
+                sed -i -e 's/mirrorlist/#mirrorlist/g' -e 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*; \
+        fi; \
         # Need enable additional repos \
         dnf -y install 'dnf-command(config-manager)'; \
         extra_packages="epel-release pcre-devel"; \
-        rpm_extra_builds="libnats libks wolfssl"; \
+        rpm_extra_builds="libnats libks"; \
         dnf -y install wget rpm-build epel-release; \
         wget --no-verbose https://dl.fedoraproject.org/pub/fedora/linux/releases/40/Everything/source/tree/Packages/l/libphonenumber-8.13.30-1.fc40.src.rpm; \
         if [ "${image_tag}" == "8" ]; then \
                 dnf config-manager --set-enabled powertools; \
                 dnf -y builddep libphonenumber-*.src.rpm; \
                 rpmbuild --define "debug_package %{nil}" --rebuild libphonenumber-*.src.rpm; \
+                wget --no-verbose https://dl.fedoraproject.org/pub/epel/9/Everything/source/tree/Packages/w/wolfssl-5.7.2-2.el9.src.rpm; \
+                dnf -y builddep wolfssl-*.src.rpm; \
+                rpmbuild --rebuild wolfssl-*.src.rpm; \
         else \
                 dnf config-manager --set-enabled crb; \
                 dnf -y builddep libphonenumber-*.src.rpm; \
