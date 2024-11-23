@@ -27,7 +27,10 @@ build_prep_centos() {
 		;;
 	esac
 
+	# mandatory packages
 	dnf -y install 'dnf-command(builddep)' wget rpm-build epel-release
+	# Packages for old branch build
+	dnf -y install pcre-devel
 
 	case ${dist_version_id} in
 	8)
@@ -44,7 +47,10 @@ build_prep_rhel() {
 	dist_version_id=$(echo ${dist_version_id} | sed -e 's/\.[0-9]\+//')
 	subscription-manager register --username="${rhel_username}" --password="${rhel_password}"
 	subscription-manager attach
+	# mandatory packages
 	dnf -y install wget rpm-build
+	# Packages for old branch build
+	dnf -y install pcre-devel
 	dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${dist_version_id}.noarch.rpm
 	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${HOSTTYPE}-rpms
 }
@@ -89,6 +95,22 @@ build_locally_libnats() {
 	install_rpms ~/rpmbuild/RPMS/*/*
 }
 
+build_locally_geoip() {
+	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/40/Everything/source/tree/Packages/g/GeoIP-1.6.12-18.fc40.src.rpm
+	get_build_deps GeoIP-*.src.rpm
+	rpmbuild --rebuild --nocheck GeoIP-*.src.rpm
+	install_rpms ~/rpmbuild/RPMS/*/*
+	rm -f GeoIP-*.src.rpm
+}
+
+build_locally_geoip_data() {
+	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/40/Everything/source/tree/Packages/g/GeoIP-GeoLite-data-2018.06-16.fc40.src.rpm
+	get_build_deps GeoIP-GeoLite-data-*.src.rpm
+	rpmbuild --rebuild --nocheck GeoIP-GeoLite-data-*.src.rpm
+	install_rpms ~/rpmbuild/RPMS/*/*
+	rm -f GeoIP-GeoLite-data-*.src.rpm
+}
+
 build_locally_wolfssl() {
 	get_build_deps rpm_extra_specs/wolfssl.spec
 	mkdir -p ~/rpmbuild/SOURCES/
@@ -99,10 +121,10 @@ build_locally_wolfssl() {
 get_locally_build_list_centos() {
 	case ${dist_version_id} in
 	8)
-		echo "libphonenumber libnats wolfssl"
+		echo "libphonenumber libnats wolfssl geoip_data geoip"
 		;;
 	9)
-		echo "libphonenumber libnats freeradius_client wolfssl"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	esac
 }
@@ -110,10 +132,10 @@ get_locally_build_list_centos() {
 get_locally_build_list_rhel() {
 	case ${dist_version_id} in
 	8)
-		echo "libphonenumber libnats wolfssl"
+		echo "libphonenumber libnats wolfssl geoip_data geoip"
 		;;
 	9)
-		echo "libphonenumber libnats freeradius_client wolfssl"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	esac
 }
