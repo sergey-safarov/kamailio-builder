@@ -12,13 +12,13 @@ set_global_vars() {
 }
 
 build_prep_fedora() {
-        # Do not required
-        dnf -y install 'dnf-command(builddep)' wget rpm-build gcc gcc-c++
+	# Do not required
+	dnf -y install 'dnf-command(builddep)' wget rpm-build gcc gcc-c++
 }
 
 build_prep_centos() {
-        # Do not required
-        case ${dist_version_id} in
+	# Do not required
+	case ${dist_version_id} in
 	8)
 		sed -i \
 		  -e 's/mirrorlist/#mirrorlist/g' \
@@ -29,14 +29,19 @@ build_prep_centos() {
 
 	# mandatory packages
 	dnf -y install 'dnf-command(builddep)' wget rpm-build epel-release
-	# Packages for old branch build
-	dnf -y install pcre-devel
 
 	case ${dist_version_id} in
 	8)
 		dnf config-manager --set-enabled powertools
+		# Packages for old branch build
+		dnf -y install pcre-devel
 		;;
 	9)
+		dnf config-manager --set-enabled crb
+		# Packages for old branch build
+		dnf -y install pcre-devel
+		;;
+	10)
 		dnf config-manager --set-enabled crb
 		;;
 	esac
@@ -78,6 +83,14 @@ build_locally_freeradius_client() {
 	rpmbuild --rebuild --nocheck freeradius-client-*.src.rpm
 	install_rpms ~/rpmbuild/RPMS/*/*
 	rm -f freeradius-client-*.src.rpm
+}
+
+build_locally_libjwt() {
+	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/41/Everything/source/tree/Packages/l/libjwt-1.12.1-17.fc41.src.rpm
+	get_build_deps libjwt-*.src.rpm
+	rpmbuild --rebuild --nocheck libjwt-*.src.rpm
+	install_rpms ~/rpmbuild/RPMS/*/*
+	rm -f libjwt-*.src.rpm
 }
 
 build_locally_libphonenumber() {
@@ -126,6 +139,9 @@ get_locally_build_list_centos() {
 	9)
 		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
+	10)
+		echo "libphonenumber libnats freeradius_client wolfssl libjwt geoip_data geoip"
+		;;
 	esac
 }
 
@@ -141,7 +157,7 @@ get_locally_build_list_rhel() {
 }
 
 get_locally_build_list_fedora() {
-		echo "libnats wolfssl"
+	echo "libnats wolfssl"
 }
 
 build_locally() {
