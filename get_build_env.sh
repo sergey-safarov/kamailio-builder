@@ -55,7 +55,17 @@ build_prep_rhel() {
 	# mandatory packages
 	dnf -y install wget rpm-build
 	# Packages for old branch build
-	dnf -y install pcre-devel
+	case ${dist_version_id} in
+	8)
+		dnf -y install pcre-devel
+		;;
+	9)
+		dnf -y install pcre-devel
+		;;
+	10)
+		dnf -y install java-devel
+		;;
+	esac
 	dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${dist_version_id}.noarch.rpm
 	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${HOSTTYPE}-rpms
 }
@@ -152,6 +162,9 @@ get_locally_build_list_rhel() {
 		;;
 	9)
 		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
+		;;
+	10)
+		echo "libphonenumber libnats freeradius_client wolfssl libjwt geoip_data geoip"
 		;;
 	esac
 }
