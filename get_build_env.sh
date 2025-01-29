@@ -43,6 +43,7 @@ build_prep_centos() {
 		;;
 	10)
 		dnf config-manager --set-enabled crb
+		dnf -y install java-devel
 		;;
 	esac
 }
@@ -197,14 +198,14 @@ cleanup_centos() {
 }
 
 cleanup_rhel() {
-	subscription-manager remove --all	
+	subscription-manager remove --all
 	subscription-manager unregister
 	rm -Rf ~/rpmbuild/
 	rm -Rf /var/cache/dnf/*
 }
 
 cleanup_xxx() {
-        rm -Rf /var/cache/dnf/* /var/cache/yum/* /var/cache/zypp/*
+	rm -Rf /var/cache/dnf/* /var/cache/yum/* /var/cache/zypp/*
 }
 
 set_global_vars
