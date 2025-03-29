@@ -53,7 +53,6 @@ build_prep_rhel() {
 	# we need to use only first index for version id
 	dist_version_id=$(echo ${dist_version_id} | sed -e 's/\.[0-9]\+//')
 	subscription-manager register --username="${rhel_username}" --password="${rhel_password}"
-	subscription-manager attach
 	# mandatory packages
 	dnf -y install wget rpm-build
 	# Packages for old branch build
@@ -203,7 +202,6 @@ cleanup_centos() {
 }
 
 cleanup_rhel() {
-	subscription-manager remove --all
 	subscription-manager unregister
 	rm -Rf ~/rpmbuild/
 	rm -Rf /var/cache/dnf/*
