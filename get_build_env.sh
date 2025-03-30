@@ -40,7 +40,7 @@ build_prep_centos() {
 	9)
 		dnf config-manager --set-enabled crb
 		# Packages for old branch build
-		dnf -y install pcre-devel
+		dnf -y install pcre-devel java-devel
 		;;
 	10)
 		dnf config-manager --set-enabled crb
