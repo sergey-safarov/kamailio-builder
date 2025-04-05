@@ -41,6 +41,17 @@ docker build \
     -t ${repo_owner}/kamailio-builder:${base_image}-${image_tag} .
 ```
 
+To build for CentOS Stream
+```sh
+export repo_owner=safarov
+export base_image=centos
+export image_tag=10
+docker build \
+    --build-arg base_image=quay.io/centos/centos \
+    --build-arg image_tag=${image_tag} \
+    -t ${repo_owner}/kamailio-builder:${base_image}-${image_tag} .
+```
+
 Suported dist
 
 | dist                | version |
