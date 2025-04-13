@@ -29,8 +29,10 @@ build_prep_centos() {
 	esac
 
 	# mandatory packages
-	dnf -y install 'dnf-command(builddep)' wget rpm-build epel-release
+	dnf -y install 'dnf-command(builddep)' wget rpm-build
+	dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${dist_version_id}.noarch.rpm
 
+	# Release specific packages and repos
 	case ${dist_version_id} in
 	8)
 		dnf config-manager --set-enabled powertools
@@ -52,10 +54,12 @@ build_prep_centos() {
 build_prep_rhel() {
 	# we need to use only first index for version id
 	dist_version_id=$(echo ${dist_version_id} | sed -e 's/\.[0-9]\+//')
-	subscription-manager register --username="${rhel_username}" --password="${rhel_password}"
+	subscription-manager register --username="${RHEL_USERNAME}" --password="${RHEL_PASSWORD}"
 	# mandatory packages
 	dnf -y install wget rpm-build
-	# Packages for old branch build
+	dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${dist_version_id}.noarch.rpm
+
+	# Release specific packages and repos
 	case ${dist_version_id} in
 	8)
 		dnf -y install pcre-devel
@@ -65,10 +69,9 @@ build_prep_rhel() {
 		;;
 	10)
 		dnf -y install java-devel
+		dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${HOSTTYPE}-rpms || dnf config-manager --set-enabled codeready-builder-beta-for-rhel-${dist_version_id}-${HOSTTYPE}-rpms
 		;;
 	esac
-	dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${dist_version_id}.noarch.rpm
-	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${HOSTTYPE}-rpms
 }
 
 get_build_deps() {
