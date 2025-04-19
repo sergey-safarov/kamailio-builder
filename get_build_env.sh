@@ -69,9 +69,9 @@ build_prep_rhel() {
 		;;
 	10)
 		dnf -y install java-devel
-		dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${HOSTTYPE}-rpms || dnf config-manager --set-enabled codeready-builder-beta-for-rhel-${dist_version_id}-${HOSTTYPE}-rpms
 		;;
 	esac
+	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${HOSTTYPE}-rpms || dnf config-manager --set-enabled codeready-builder-beta-for-rhel-${dist_version_id}-${HOSTTYPE}-rpms
 }
 
 get_build_deps() {
