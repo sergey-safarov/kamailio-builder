@@ -21,10 +21,10 @@ jobs:
         os:
         - centos-10
         - rhel-10
-        - centos-9
-        - rhel-9
-        - centos-8
-        - rhel-8
+#        - centos-9
+#        - rhel-9
+#        - centos-8
+#        - rhel-8
         arch:
         - x86_64
         - aarch64
@@ -49,23 +49,23 @@ jobs:
         # setting base iamge
         - base_image: quay.io/centos/centos:stream10
           os: centos-10
-        - base_image: quay.io/centos/centos:stream9
-          os: centos-9
-        - base_image: quay.io/centos/centos:stream8
-          os: centos-8
+#        - base_image: quay.io/centos/centos:stream9
+#          os: centos-9
+#        - base_image: quay.io/centos/centos:stream8
+#          os: centos-8
         - base_image: registry.redhat.io/ubi10-beta/ubi:latest
           os: rhel-10
-        - base_image: registry.redhat.io/ubi9/ubi:latest
-          os: rhel-9
-        - base_image: registry.redhat.io/ubi8/ubi:latest
-          os: rhel-8
-        exclude:
-        - os: centos-8
-          arch: s390x
-        - os: rhel-8
-          arch: s390x
-        - os: rhel-9
-          arch: ppc64le
+#        - base_image: registry.redhat.io/ubi9/ubi:latest
+#          os: rhel-9
+#        - base_image: registry.redhat.io/ubi8/ubi:latest
+#          os: rhel-8
+#        exclude:
+#        - os: centos-8
+#          arch: s390x
+#        - os: rhel-8
+#          arch: s390x
+#        - os: rhel-9
+#          arch: ppc64le
 
     runs-on: ${{ matrix.runner }}
     permissions:
