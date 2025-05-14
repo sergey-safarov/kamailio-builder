@@ -191,7 +191,7 @@ build_locally() {
 }
 
 install_kamailio_deps() {
-	wget --no-verbose --continue https://raw.githubusercontent.com/kamailio/kamailio/master/pkg/kamailio/obs/kamailio.spec
+	wget --no-verbose --continue https://raw.githubusercontent.com/sergey-safarov/kamailio/master/pkg/kamailio/obs/kamailio.spec
 	get_build_deps kamailio.spec
 	rm -f kamailio.spec
 }
