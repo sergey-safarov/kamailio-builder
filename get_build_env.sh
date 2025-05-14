@@ -51,6 +51,7 @@ build_prep_centos() {
 		dnf -y install java-devel
 		;;
 	esac
+	dnf -y install radcli
 }
 
 build_prep_rhel() {
@@ -67,12 +68,14 @@ build_prep_rhel() {
 		dnf -y install pcre-devel
 		;;
 	9)
-		dnf -y install pcre-devel
+		# Packages for old branch build
+		dnf -y install pcre-devel java-devel
 		;;
 	10)
 		dnf -y install java-devel
 		;;
 	esac
+	dnf -y install radcli
 	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${dist_arch}-rpms || dnf config-manager --set-enabled codeready-builder-beta-for-rhel-${dist_version_id}-${dist_arch}-rpms
 }
 
