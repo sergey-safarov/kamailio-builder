@@ -67,7 +67,8 @@ build_prep_rhel() {
 		dnf -y install pcre-devel
 		;;
 	9)
-		dnf -y install pcre-devel
+		# Packages for old branch build
+		dnf -y install pcre-devel java-devel
 		;;
 	10)
 		dnf -y install java-devel
@@ -174,7 +175,7 @@ get_locally_build_list_rhel() {
 		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	10)
-		echo "libphonenumber libnats freeradius_client wolfssl libjwt geoip_data geoip"
+		echo "libnats freeradius_client wolfssl libjwt geoip_data geoip"
 		;;
 	esac
 }
