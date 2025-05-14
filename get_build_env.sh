@@ -58,7 +58,7 @@ build_prep_rhel() {
 	dist_version_id=$(echo ${dist_version_id} | sed -e 's/\.[0-9]\+//')
 	subscription-manager register --username="${RHEL_USERNAME}" --password="${RHEL_PASSWORD}"
 	# mandatory packages
-	dnf -y install wget rpm-build
+	dnf -y install wget rpm-build radcli
 	dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${dist_version_id}.noarch.rpm
 
 	# Release specific packages and repos
@@ -175,7 +175,7 @@ get_locally_build_list_rhel() {
 		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	10)
-		echo "freeradius_client wolfssl libjwt geoip_data geoip"
+		echo "wolfssl libjwt geoip_data geoip"
 		;;
 	esac
 }
