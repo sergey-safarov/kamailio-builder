@@ -175,7 +175,7 @@ get_locally_build_list_rhel() {
 		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	10)
-		echo "libnats freeradius_client wolfssl libjwt geoip_data geoip"
+		echo "freeradius_client wolfssl libjwt geoip_data geoip"
 		;;
 	esac
 }
