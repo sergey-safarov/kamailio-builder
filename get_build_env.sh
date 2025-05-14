@@ -58,7 +58,7 @@ build_prep_rhel() {
 	dist_version_id=$(echo ${dist_version_id} | sed -e 's/\.[0-9]\+//')
 	subscription-manager register --username="${RHEL_USERNAME}" --password="${RHEL_PASSWORD}"
 	# mandatory packages
-	dnf -y install wget rpm-build radcli
+	dnf -y install wget rpm-build
 	dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${dist_version_id}.noarch.rpm
 
 	# Release specific packages and repos
@@ -74,6 +74,7 @@ build_prep_rhel() {
 		dnf -y install java-devel
 		;;
 	esac
+	dnf -y install radcli
 	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${dist_arch}-rpms || dnf config-manager --set-enabled codeready-builder-beta-for-rhel-${dist_version_id}-${dist_arch}-rpms
 }
 
