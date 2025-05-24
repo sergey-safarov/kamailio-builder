@@ -1,0 +1,90 @@
+---
+name: rpm-builder
+'on':
+  schedule:
+  # Rebuild images day-of-month 15 in January and July
+  - cron: '41 6 15 1,7 *'
+  push:
+    branches: [ master ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: kamailio-builder
+  IMAGE_REPO: ghcr.io
+
+jobs:
+  build:
+    name: Build image
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+        - alpine-edge
+        - alpine-latest
+        include:
+        # setting base iamge
+        - base_image: alpine:edge
+          os: alpine-edge
+        - base_image: alpine:latest
+          os: alpine-latest
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v4
+
+    - name: print commit info
+      id: init
+      run: |
+        git log -n 1
+
+    - name: Image metadata
+      id: metadata
+      uses: docker/metadata-action@v5
+      with:
+        # list of Docker images to use as base name for tags
+        images: |
+          ${{env.IMAGE_REPO}}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}ttt
+        tags: |
+          ${{ matrix.os }}
+        flavor: |
+          latest=false
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build builder image
+      uses: docker/build-push-action@v6
+      id: build
+      env:
+        DOCKER_BUILD_SUMMARY: false
+      with:
+        tags: ${{ steps.metadata.outputs.tags }}
+        labels: ${{ steps.metadata.outputs.labels }}
+        platforms: "linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/riscv64,linux/s390x"
+        context: "{{defaultContext}}:apk"
+        build-args: |
+          base_image=${{ matrix.base_image }}
+
+  cleanup:
+    name: Cleanup untaged images
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      packages: write
+    needs:
+    - build
+    steps:
+    - name: Cleanup untaged
+      uses: actions/delete-package-versions@v5
+      with:
+        owner: ${{ github.repository_owner }}
+        package-name: ${{ env.IMAGE_NAME }}
+        package-type: container
+        delete-only-untagged-versions: true
