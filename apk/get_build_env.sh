@@ -23,7 +23,7 @@ package_dumpcap() {
 }
 
 install_common_deps() {
-	apk --no-cache add build-base git doas abuild tcpdump
+	apk --no-cache add build-base git doas abuild tcpdump coreutils
 }
 
 prepare_build_user() {
