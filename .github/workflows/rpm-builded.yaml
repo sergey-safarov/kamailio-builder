@@ -182,7 +182,7 @@ jobs:
             jobj=$(echo "${jobj}" | jq -c ". + [\"${image_name}\"]")
             docker push ${image_name}
         done
-        eval_command=$(echo "${jobj}" | jq -r '["docker buildx imagetools create --tag ${{ env.IMAGE_REPO }}/${{ github.repository_owner }}/kamailio-builder:${{ matrix.os }}"] + . | join(" ")')
+        eval_command=$(echo "${jobj}" | jq -r '["docker buildx imagetools create --tag ${{ env.IMAGE_REPO }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.os }}"] + . | join(" ")')
         eval "${eval_command}"
 
   cleanup:
