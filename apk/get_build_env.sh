@@ -13,9 +13,7 @@ prepare_build_user() {
 	adduser -D build
 	addgroup build abuild
 	echo "%abuild ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/abuild
-	sudo -u build strace git config --global user.name 'Kamailio GitHub service user'
-	sudo -u build git config --global user.email 'github@kamailio.org'
-	sudo -u build abuild-keygen -a -i -q -n
+	su - build -c "git config --global user.name 'Kamailio GitHub service user'; git config --global user.email 'github@kamailio.org'; abuild-keygen -a -i -n"
 }
 
 install_build_deps() {
