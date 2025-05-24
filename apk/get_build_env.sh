@@ -29,4 +29,3 @@ apk --no-cache upgrade
 image_filelist >> ${OS_FILELIST}
 prepare_build_user
 install_build_deps
-find /usr/src/kamailio/pkg/docker/alpine/apk_files

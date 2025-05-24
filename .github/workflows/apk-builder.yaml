@@ -1,9 +1,9 @@
 ---
-name: rpm-builder
+name: apk-builder
 'on':
   schedule:
   # Rebuild images day-of-month 15 in January and July
-  - cron: '41 6 15 1,7 *'
+  - cron: '41 6 15 * *'
   push:
     branches: [ master ]
   # Allows you to run this workflow manually from the Actions tab
