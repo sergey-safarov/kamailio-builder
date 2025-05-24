@@ -41,6 +41,7 @@ jobs:
       run: |
         git log -n 1
 
+
     - name: Image metadata
       id: metadata
       uses: docker/metadata-action@v5
