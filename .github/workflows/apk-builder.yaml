@@ -70,6 +70,7 @@ jobs:
         labels: ${{ steps.metadata.outputs.labels }}
         platforms: "linux/s390x"
         context: "{{defaultContext}}:apk"
+        push: true
         build-args: |
           base_image=${{ matrix.base_image }}
 
