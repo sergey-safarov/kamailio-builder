@@ -24,6 +24,7 @@ jobs:
         - rhel-10
         - centos-9
         - rhel-9
+        - rocky-9
         - centos-8
         - rhel-8
         arch:
@@ -60,6 +61,8 @@ jobs:
           os: rhel-9
         - base_image: registry.redhat.io/ubi8/ubi:latest
           os: rhel-8
+        - base_image: rockylinux:9
+          os: rocky-9
         exclude:
         # We does build for ppc64le because RedHat does not have CodeReady repo for ppc64le.
         # more info at https://access.redhat.com/solutions/5500841

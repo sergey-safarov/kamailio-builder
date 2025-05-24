@@ -2,7 +2,7 @@ To build image for RHEL-7, RHEL-8 need define variables `repo_owner`, `base_imag
 then start build image like
 
 ```sh
-export repo_owner=safarov
+export repo_owner=example
 export base_image=rhel-9
 export RHEL_USERNAME=${your_username}
 export RHEL_PASSWORD=${your_password}
@@ -15,10 +15,10 @@ docker buildx build \
     -t ${repo_owner}/kamailio-builder:${base_image} .
 ```
 
-To build image need to define environement variables `repo_owner`, `base_image`, `image_tag` and then start build image like
+To build image for other dist need to define environment variables `repo_owner`, `base_image`, `image_tag` and then start build image like
 
 ```sh
-export repo_owner=safarov
+export repo_owner=example
 export base_image=fedora-42
 export platform=x86_64
 docker buildx build \
@@ -29,7 +29,7 @@ docker buildx build \
 
 To build for CentOS Stream
 ```sh
-export repo_owner=safarov
+export repo_owner=example
 export base_image=centos-10
 export platform=x86_64
 docker buildx build \
@@ -48,7 +48,6 @@ Suported dist
 | centos              | 10      |x86_64, aarch64, s390x, ppc64le|
 | centos              | 9       |x86_64, aarch64, s390x, ppc64le|
 | centos              | 8       |x86_64, aarch64, s390x         |
+| rocky               | 9       |x86_64, aarch64, s390x, ppc64le|
 | fedora              | 42      |x86_64, aarch64, s390x, ppc64le|
 | fedora              | 41      |x86_64, aarch64, s390x, ppc64le|
-
-x86_64, aarch64, s390x, ppc64le

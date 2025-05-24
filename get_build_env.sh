@@ -10,7 +10,7 @@ set -o errexit -o nounset -o pipefail
 
 set_global_vars() {
 	dist_id=$(grep "^ID=" /etc/os-release | sed -e 's/^ID=//' -e 's/"//g')
-	dist_version_id=$(grep "^VERSION_ID=" /etc/os-release | sed -e 's/^VERSION_ID=//' -e 's/"//g')
+	dist_version_id=$(grep "^VERSION_ID=" /etc/os-release | sed -E -e 's/^VERSION_ID=//' -e 's/"//g' -e 's/\.[0-9]+//')
 	dist_arch=$(uname -m)
 }
 
@@ -77,6 +77,10 @@ build_prep_rhel() {
 	esac
 	dnf -y install radcli
 	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${dist_arch}-rpms || dnf config-manager --set-enabled codeready-builder-beta-for-rhel-${dist_version_id}-${dist_arch}-rpms
+}
+
+build_prep_rocky() {
+	build_prep_centos
 }
 
 get_build_deps() {
@@ -182,6 +186,10 @@ get_locally_build_list_rhel() {
 	esac
 }
 
+get_locally_build_list_rocky() {
+	get_locally_build_list_centos
+}
+
 get_locally_build_list_fedora() {
 	echo "libnats wolfssl"
 }
@@ -211,6 +219,11 @@ cleanup_centos() {
 
 cleanup_rhel() {
 	subscription-manager unregister
+	rm -Rf ~/rpmbuild/
+	rm -Rf /var/cache/dnf/*
+}
+
+cleanup_rocky() {
 	rm -Rf ~/rpmbuild/
 	rm -Rf /var/cache/dnf/*
 }
