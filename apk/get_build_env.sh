@@ -9,12 +9,12 @@ image_filelist() {
 }
 
 prepare_build_user() {
-	apk --no-cache add sudo git abuild strace
+	apk --no-cache add sudo git abuild
 	adduser -D build
 	addgroup build abuild
 	echo "%abuild ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/abuild
 	su - build -c "git config --global user.name 'Kamailio GitHub service user'; git config --global user.email 'github@kamailio.org'"
-	su - build -c "strace abuild-keygen -a -i -n"
+	sudo -u build abuild-keygen -a -i -n
 }
 
 install_build_deps() {
