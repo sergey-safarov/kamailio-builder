@@ -107,7 +107,7 @@ jobs:
       with:
         # list of Docker images to use as base name for tags
         images: |
-          ${{env.IMAGE_REPO}}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+          ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
         tags: |
           ${{ matrix.os }}-${{ matrix.arch }}
         flavor: |
@@ -151,6 +151,7 @@ jobs:
         - rhel-10
         - centos-9
         - rhel-9
+        - rocky-9
         - centos-8
         - rhel-8
     runs-on: ubuntu-latest
@@ -158,6 +159,11 @@ jobs:
       packages: write
     needs:
     - build
+    services:
+      registry:
+        image: registry:2
+        ports:
+        - 5000:5000
     steps:
     - name: Download artifact images
       uses: actions/download-artifact@v4
@@ -173,17 +179,25 @@ jobs:
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Pushing image to the repo
+    - name: Pushing image to the local repo
       run: |
         set -o errexit -o nounset -o pipefail
         jobj="[]"
         for image_file in ${{ runner.temp }}/tar-images/*.tar; do
             image_name=$(docker load --input ${image_file} | sed -e 's/Loaded image: //')
-            jobj=$(echo "${jobj}" | jq -c ". + [\"${image_name}\"]")
-            docker push ${image_name}
+            repo_image_name=$(echo localhost:5000/${image_name})
+            jobj=$(echo "${jobj}" | jq -c ". + [\"${repo_image_name}\"]")
+            docker image tag ${image_name} ${repo_image_name}
+            docker push ${repo_image_name}
         done
-        eval_command=$(echo "${jobj}" | jq -r '["docker buildx imagetools create --tag ${{ env.IMAGE_REPO }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.os }}"] + . | join(" ")')
+        eval_command=$(echo "${jobj}" | jq -r '["docker buildx imagetools create --tag localhost:5000/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.os }}"] + . | join(" ")')
         eval "${eval_command}"
+
+    - name: Push image to GHCR
+      run: |
+        docker buildx imagetools create \
+            --tag ${{ env.IMAGE_REPO }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.os }} \
+            localhost:5000/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.os }}
 
   cleanup:
     name: Cleanup untaged images
@@ -195,9 +209,8 @@ jobs:
     - push
     steps:
     - name: Cleanup untaged
-      uses: actions/delete-package-versions@v5
+      uses: dataaxiom/ghcr-cleanup-action@v1
       with:
+        delete-orphaned-images: true
         owner: ${{ github.repository_owner }}
-        package-name: ${{ env.IMAGE_NAME }}
-        package-type: container
-        delete-only-untagged-versions: true
+        package: ${{ env.IMAGE_NAME }}
