@@ -41,12 +41,12 @@ jobs:
         docker pull ${{env.IMAGE_REPO}}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.os }}
         SHA_ALPINE=$(docker image inspect -f '{{index .RootFS.Layers 0}}' ${{ matrix.base_image }})
         SHA_BUILDER=$(docker image inspect -f '{{index .RootFS.Layers 0}}' ${{env.IMAGE_REPO}}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ matrix.os }})
-        if [ "$(GITHUB_EVENT_NAME}" = "workflow_dispatch" -o "${SHA_ALPINE}" != "${SHA_BUILDER}" ]; then
+        if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" -o "${SHA_ALPINE}" != "${SHA_BUILDER}" ]; then
           echo "update=true" >> $GITHUB_OUTPUT
+        else
+          echo "Builder already use fresh alpine base image, finishing"
+          echo "update=false" >> $GITHUB_OUTPUT
         fi
-#        else
-#          echo "Builder already use fresh alpine base image, finishing"
-#          echo "update=false" >> $GITHUB_OUTPUT
 
     - name: checkout sources
       uses: actions/checkout@v4
