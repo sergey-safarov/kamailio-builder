@@ -9,10 +9,10 @@ image_filelist() {
 }
 
 package_dumpcap() {
-	HOSTTYPE=$(uname -m)
+	apkArch="$(apk --print-arch)"
 
-	case "${HOSTTYPE}" in
-	armv7l)
+	case "${apkArch}" in
+	armhf)
 		echo "armhf arch does not have  wireshark-common package, skiping"
 		;;
 	*)
