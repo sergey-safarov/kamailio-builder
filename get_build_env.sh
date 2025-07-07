@@ -79,6 +79,10 @@ build_prep_rhel() {
 	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${dist_arch}-rpms || dnf config-manager --set-enabled codeready-builder-beta-for-rhel-${dist_version_id}-${dist_arch}-rpms
 }
 
+build_prep_almalinux() {
+	build_prep_centos
+}
+
 build_prep_rocky() {
 	build_prep_centos
 }
@@ -186,6 +190,10 @@ get_locally_build_list_rhel() {
 	esac
 }
 
+get_locally_build_list_almalinux() {
+	get_locally_build_list_centos
+}
+
 get_locally_build_list_rocky() {
 	get_locally_build_list_centos
 }
@@ -219,6 +227,11 @@ cleanup_centos() {
 
 cleanup_rhel() {
 	subscription-manager unregister
+	rm -Rf ~/rpmbuild/
+	rm -Rf /var/cache/dnf/*
+}
+
+cleanup_almalinux() {
 	rm -Rf ~/rpmbuild/
 	rm -Rf /var/cache/dnf/*
 }
