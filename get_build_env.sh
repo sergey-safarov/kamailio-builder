@@ -109,7 +109,7 @@ install_rpms() {
 }
 
 build_locally_freeradius_client() {
-	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/40/Everything/source/tree/Packages/f/freeradius-client-1.1.7-31.fc40.src.rpm
+	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/42/Everything/source/tree/Packages/f/freeradius-client-1.1.7-34.fc42.src.rpm
 	get_build_deps freeradius-client-*.src.rpm
 	rpmbuild -ra --nocheck freeradius-client-*.src.rpm
 	install_rpms ~/rpmbuild/RPMS/*/*
@@ -117,7 +117,7 @@ build_locally_freeradius_client() {
 }
 
 build_locally_libjwt() {
-	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/41/Everything/source/tree/Packages/l/libjwt-1.12.1-17.fc41.src.rpm
+	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/42/Everything/source/tree/Packages/l/libjwt-1.12.1-19.fc42.src.rpm
 	get_build_deps libjwt-*.src.rpm
 	rpmbuild -ra --nocheck libjwt-*.src.rpm
 	install_rpms ~/rpmbuild/RPMS/*/*
@@ -125,7 +125,7 @@ build_locally_libjwt() {
 }
 
 build_locally_libphonenumber() {
-	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/40/Everything/source/tree/Packages/l/libphonenumber-8.13.30-1.fc40.src.rpm
+	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/42/Everything/source/tree/Packages/l/libphonenumber-8.13.55-1.fc42.src.rpm
 	get_build_deps libphonenumber-*.src.rpm
 	rpmbuild -ra --nocheck libphonenumber-*.src.rpm
 	install_rpms ~/rpmbuild/RPMS/*/*
@@ -140,7 +140,7 @@ build_locally_libnats() {
 }
 
 build_locally_geoip() {
-	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/40/Everything/source/tree/Packages/g/GeoIP-1.6.12-18.fc40.src.rpm
+	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/42/Everything/source/tree/Packages/g/GeoIP-1.6.12-20.fc42.src.rpm
 	get_build_deps GeoIP-*.src.rpm
 	rpmbuild -ra --nocheck GeoIP-*.src.rpm
 	install_rpms ~/rpmbuild/RPMS/*/*
@@ -148,7 +148,7 @@ build_locally_geoip() {
 }
 
 build_locally_geoip_data() {
-	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/40/Everything/source/tree/Packages/g/GeoIP-GeoLite-data-2018.06-16.fc40.src.rpm
+	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/42/Everything/source/tree/Packages/g/GeoIP-GeoLite-data-2018.06-18.fc42.src.rpm
 	get_build_deps GeoIP-GeoLite-data-*.src.rpm
 	rpmbuild -ra --nocheck GeoIP-GeoLite-data-*.src.rpm
 	install_rpms ~/rpmbuild/RPMS/*/*
