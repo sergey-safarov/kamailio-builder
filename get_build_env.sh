@@ -76,7 +76,7 @@ build_prep_rhel() {
 		;;
 	esac
 	dnf -y install radcli
-	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${dist_arch}-rpms || dnf config-manager --set-enabled codeready-builder-beta-for-rhel-${dist_version_id}-${dist_arch}-rpms
+	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${dist_arch}-rpms
 }
 
 build_prep_almalinux() {

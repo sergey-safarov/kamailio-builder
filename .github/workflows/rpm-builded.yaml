@@ -61,7 +61,7 @@ jobs:
           os: centos-9
         - base_image: quay.io/centos/centos:stream8
           os: centos-8
-        - base_image: registry.redhat.io/ubi10-beta/ubi:latest
+        - base_image: registry.redhat.io/ubi10/ubi:latest
           os: rhel-10
         - base_image: registry.redhat.io/ubi9/ubi:latest
           os: rhel-9
