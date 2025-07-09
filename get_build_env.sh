@@ -158,7 +158,7 @@ build_locally_geoip_data() {
 build_locally_wolfssl() {
 	get_build_deps rpm_extra_specs/wolfssl.spec
 	mkdir -p ~/rpmbuild/SOURCES/
-	rpmbuild -ba --undefine=_disable_source_fetch --nocheck rpm_extra_specs/wolfssl.spec
+	rpmbuild -ba --undefine=_disable_source_fetch --nocheck --define "_gcc_lto_cflags -I /usr/include" rpm_extra_specs/wolfssl.spec
 	install_rpms ~/rpmbuild/RPMS/*/*
 }
 

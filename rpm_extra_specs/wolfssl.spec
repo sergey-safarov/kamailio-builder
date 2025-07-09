@@ -4,7 +4,7 @@ Version: 5.8.0
 Release: 1
 License: GPLv2
 Group: System Environment/Libraries
-BuildRequires: gcc <= 14.2.1-2
+BuildRequires: gcc
 BuildRequires: glibc
 BuildRequires: glibc-common
 BuildRequires: glibc-devel
