@@ -78,7 +78,9 @@ jobs:
           arch: ppc64le
         - os: rhel-8
           arch: ppc64le
-        # also Codeready repo does not exist for rhel-9, s390x arch
+        # also Codeready repo does not exist for rhel-9 and 10, s390x arch
+        - os: rhel-10
+          arch: s390x
         - os: rhel-9
           arch: s390x
         # s390x arch does not exist for rhel 8 and centos 8
