@@ -26,7 +26,7 @@ build_prep_centos() {
 		sed -i \
 		  -e 's/mirrorlist/#mirrorlist/g' \
 		  -e 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' \
-		  /etc/yum.repos.d/CentOS-*
+		  /etc/yum.repos.d/CentOS-* || true
 		;;
 	esac
 
