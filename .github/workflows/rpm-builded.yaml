@@ -23,6 +23,7 @@ jobs:
         - alma-10
         - centos-10
         - rhel-10
+        - rocky-10
         - alma-9
         - centos-9
         - rhel-9
@@ -71,9 +72,11 @@ jobs:
           os: rhel-9
         - base_image: registry.redhat.io/ubi8/ubi:latest
           os: rhel-8
-        - base_image: rockylinux:9
+        - base_image: rockylinux/rockylinux:10
+          os: rocky-10
+        - base_image: rockylinux/rockylinux:9
           os: rocky-9
-        - base_image: rockylinux:8
+        - base_image: rockylinux/rockylinux:8
           os: rocky-8
         exclude:
         # We does build for ppc64le because RedHat does not have CodeReady repo for ppc64le.
@@ -89,7 +92,9 @@ jobs:
           arch: s390x
         - os: rhel-9
           arch: s390x
-        # s390x arch does not exist for rhel 8, centos 8, rocky 8
+        # s390x arch does not exist for rhel 8, centos 8, rocky 8. For alma-8 cannot be compiled libphonenumber
+        - os: alma-8
+          arch: s390x
         - os: centos-8
           arch: s390x
         - os: rhel-8
@@ -169,6 +174,7 @@ jobs:
         - alma-10
         - centos-10
         - rhel-10
+        - rocky-10
         - alma-9
         - centos-9
         - rhel-9
