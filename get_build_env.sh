@@ -51,7 +51,6 @@ build_prep_centos() {
 		dnf -y install java-devel
 		;;
 	esac
-	dnf -y install radcli
 }
 
 build_prep_rhel() {
@@ -61,6 +60,7 @@ build_prep_rhel() {
 	# mandatory packages
 	dnf -y install wget rpm-build
 	dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${dist_version_id}.noarch.rpm
+	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${dist_arch}-rpms
 
 	# Release specific packages and repos
 	case ${dist_version_id} in
@@ -75,8 +75,6 @@ build_prep_rhel() {
 		dnf -y install java-devel
 		;;
 	esac
-	dnf -y install radcli
-	dnf config-manager --set-enabled codeready-builder-for-rhel-${dist_version_id}-${dist_arch}-rpms
 }
 
 build_prep_almalinux() {
@@ -114,14 +112,6 @@ build_locally_freeradius_client() {
 	rpmbuild -ra --nocheck freeradius-client-*.src.rpm
 	install_rpms ~/rpmbuild/RPMS/*/*
 	rm -f freeradius-client-*.src.rpm
-}
-
-build_locally_libjwt() {
-	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/42/Everything/source/tree/Packages/l/libjwt-1.12.1-19.fc42.src.rpm
-	get_build_deps libjwt-*.src.rpm
-	rpmbuild -ra --nocheck libjwt-*.src.rpm
-	install_rpms ~/rpmbuild/RPMS/*/*
-	rm -f libjwt-*.src.rpm
 }
 
 build_locally_libphonenumber() {
@@ -171,7 +161,7 @@ get_locally_build_list_centos() {
 		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	10)
-		echo "libphonenumber libnats freeradius_client wolfssl libjwt geoip_data geoip"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	esac
 }
@@ -185,7 +175,7 @@ get_locally_build_list_rhel() {
 		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	10)
-		echo "libphonenumber libnats freeradius_client wolfssl libjwt geoip_data geoip"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	esac
 }
