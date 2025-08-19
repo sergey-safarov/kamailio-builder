@@ -158,16 +158,24 @@ build_locally_wolfssl() {
 	install_rpms ~/rpmbuild/RPMS/*/*
 }
 
+build_locally_dnssec_tools() {
+	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/42/Everything/source/tree/Packages/d/dnssec-tools-2.2.3-28.fc42.src.rpm
+	get_build_deps dnssec-tools-*.src.rpm
+	rpmbuild -ra --nocheck dnssec-tools-*.src.rpm
+	install_rpms ~/rpmbuild/RPMS/*/*
+	rm -f dnssec-tools-*.src.rpm
+}
+
 get_locally_build_list_centos() {
 	case ${dist_version_id} in
 	8)
-		echo "libphonenumber libnats wolfssl geoip_data geoip"
+		echo "libphonenumber libnats wolfssl geoip_data geoip dnssec_tools"
 		;;
 	9)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip dnssec_tools"
 		;;
 	10)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip dnssec_tools"
 		;;
 	esac
 }
@@ -175,13 +183,13 @@ get_locally_build_list_centos() {
 get_locally_build_list_rhel() {
 	case ${dist_version_id} in
 	8)
-		echo "libphonenumber libnats wolfssl geoip_data geoip"
+		echo "libphonenumber libnats wolfssl geoip_data geoip dnssec_tools"
 		;;
 	9)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip dnssec_tools"
 		;;
 	10)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip dnssec_tools"
 		;;
 	esac
 }
