@@ -26,7 +26,7 @@ jobs:
         # setting base iamge
         - base_image: alpine:edge
           os: alpine-edge
-        - base_image: alpine:3.21.3
+        - base_image: alpine:latest
           os: alpine-latest
 
     runs-on: ubuntu-latest
