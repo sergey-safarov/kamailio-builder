@@ -23,13 +23,14 @@ package_dumpcap() {
 }
 
 install_common_deps() {
-	apk --no-cache add build-base git doas abuild tcpdump coreutils
+	apk --no-cache add build-base git doas abuild tcpdump coreutils sudo
 }
 
 prepare_build_user() {
 	adduser -D build
 	addgroup build abuild
 	echo "permit nopass :abuild as root" > /etc/doas.d/doas.conf
+	echo '%abuild ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/abulid.conf
 	su - build -c "git config --global user.name 'Kamailio GitHub service user'"
 	su - build -c "git config --global user.email 'github@kamailio.org'"
 	su - build -c "abuild-keygen -a -i -n"
