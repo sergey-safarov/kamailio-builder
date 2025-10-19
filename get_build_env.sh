@@ -158,6 +158,14 @@ build_locally_wolfssl() {
 	install_rpms ~/rpmbuild/RPMS/*/*
 }
 
+build_locally_perl_dnssec() {
+	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/42/Everything/source/tree/Packages/p/perl-Net-DNS-SEC-1.26-2.fc42.src.rpm
+	get_build_deps perl-Net-DNS-SEC-*.src.rpm
+	rpmbuild -ra --nocheck perl-Net-DNS-SEC-*.src.rpm
+	install_rpms ~/rpmbuild/RPMS/*/*
+	rm -f perl-Net-DNS-SEC-*.src.rpm
+}
+
 build_locally_dnssec_tools() {
 	wget --no-verbose --continue https://dl.fedoraproject.org/pub/fedora/linux/releases/42/Everything/source/tree/Packages/d/dnssec-tools-2.2.3-28.fc42.src.rpm
 	get_build_deps dnssec-tools-*.src.rpm
@@ -169,13 +177,13 @@ build_locally_dnssec_tools() {
 get_locally_build_list_centos() {
 	case ${dist_version_id} in
 	8)
-		echo "libphonenumber libnats wolfssl geoip_data geoip dnssec_tools"
+		echo "libphonenumber libnats wolfssl geoip_data geoip perl_dnssec dnssec_tools"
 		;;
 	9)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip dnssec_tools"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip perl_dnssec dnssec_tools"
 		;;
 	10)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip dnssec_tools"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip perl_dnssec dnssec_tools"
 		;;
 	esac
 }
@@ -183,13 +191,13 @@ get_locally_build_list_centos() {
 get_locally_build_list_rhel() {
 	case ${dist_version_id} in
 	8)
-		echo "libphonenumber libnats wolfssl geoip_data geoip dnssec_tools"
+		echo "libphonenumber libnats wolfssl geoip_data geoip perl_dnssec dnssec_tools"
 		;;
 	9)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip dnssec_tools"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip perl_dnssec dnssec_tools"
 		;;
 	10)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip dnssec_tools"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip perl_dnssec dnssec_tools"
 		;;
 	esac
 }
