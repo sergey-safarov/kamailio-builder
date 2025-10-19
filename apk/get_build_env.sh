@@ -39,6 +39,7 @@ prepare_build_user() {
 install_build_deps() {
 	cd /tmp
 	wget https://raw.githubusercontent.com/sergey-safarov/kamailio/refs/heads/master/pkg/kamailio/alpine/APKBUILD
+	wget https://raw.githubusercontent.com/sergey-safarov/kamailio/refs/heads/master/pkg/kamailio/alpine/APKBUILD-kamailio
 	if grep -q edge /etc/os-release; then
 		echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 		export use_testing=true
