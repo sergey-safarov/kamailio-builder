@@ -53,7 +53,7 @@ build_prep_centos() {
 		dnf install libjwt-devel -y --releasever=10.1 --disablerepo=* --enablerepo=epel
 		;;
 	esac
-	dnf -y install radcli libnghttp2-devel librdkafka-devel mosquitto-devel libgcrypt-devel
+#	dnf -y install radcli libnghttp2-devel librdkafka-devel mosquitto-devel libgcrypt-devel
 }
 
 build_prep_rhel() {
@@ -80,7 +80,7 @@ build_prep_rhel() {
 		dnf install libjwt-devel -y --releasever=10.1 --disablerepo=* --enablerepo=epel
 		;;
 	esac
-	dnf -y install radcli libnghttp2-devel librdkafka-devel mosquitto-devel libgcrypt-devel
+#	dnf -y install radcli libnghttp2-devel librdkafka-devel mosquitto-devel libgcrypt-devel
 }
 
 build_prep_almalinux() {
