@@ -193,13 +193,13 @@ build_locally_dnssec_tools() {
 get_locally_build_list_centos() {
 	case ${dist_version_id} in
 	8)
-		echo "libphonenumber libnats wolfssl geoip_data geoip perl_getopt perl_dnssec perl_qwizard dnssec_tools"
+		echo "libphonenumber libnats wolfssl geoip_data geoip"
 		;;
 	9)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip perl_getopt perl_dnssec perl_qwizard dnssec_tools"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	10)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip perl_getopt perl_dnssec perl_qwizard dnssec_tools"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	esac
 }
@@ -207,13 +207,13 @@ get_locally_build_list_centos() {
 get_locally_build_list_rhel() {
 	case ${dist_version_id} in
 	8)
-		echo "libphonenumber libnats wolfssl geoip_data geoip perl_getopt perl_dnssec perl_qwizard dnssec_tools"
+		echo "libphonenumber libnats wolfssl geoip_data geoip"
 		;;
 	9)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip perl_getopt perl_dnssec perl_qwizard dnssec_tools"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	10)
-		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip perl_getopt perl_dnssec perl_qwizard dnssec_tools"
+		echo "libphonenumber libnats freeradius_client wolfssl geoip_data geoip"
 		;;
 	esac
 }
