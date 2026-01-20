@@ -2,7 +2,7 @@
 %define debug_package %{nil}
 
 Name:          libnats
-Version:       3.8.2
+Version:       3.12.0
 Release:       1%{?dist}
 Summary:       NATS & NATS Streaming - C Client
 License:       ASL 2.0
