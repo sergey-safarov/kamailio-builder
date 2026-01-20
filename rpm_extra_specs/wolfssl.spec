@@ -1,6 +1,10 @@
+%if 0%{?rhel} == 10
+%global _lto_cflags %{nil}
+%endif
+
 Summary: Embedded SSL Library
 Name: wolfssl
-Version: 5.8.0
+Version: 5.8.4
 Release: 1
 License: GPLv2
 Group: System Environment/Libraries
