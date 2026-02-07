@@ -17,6 +17,7 @@ set_global_vars() {
 build_prep_fedora() {
 	# Do not required
 	dnf -y install 'dnf-command(builddep)' wget rpm-build gcc gcc-c++
+	dnf -y install libdb-devel
 }
 
 build_prep_centos() {
@@ -51,6 +52,7 @@ build_prep_centos() {
 		dnf -y install java-devel
 		;;
 	esac
+	dnf -y install libdb-devel
 }
 
 build_prep_rhel() {
@@ -75,6 +77,7 @@ build_prep_rhel() {
 		dnf -y install java-devel
 		;;
 	esac
+	dnf -y install libdb-devel
 }
 
 build_prep_almalinux() {
