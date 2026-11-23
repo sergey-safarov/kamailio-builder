@@ -4,7 +4,7 @@
 
 Summary: Embedded SSL Library
 Name: wolfssl
-Version: 5.8.4
+Version: 5.9.4
 Release: 1
 License: GPLv2
 Group: System Environment/Libraries
@@ -71,8 +71,6 @@ fi
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog.md COPYING README README.md
 %{_docdir}/wolfssl/taoCert.txt
-%{_docdir}/wolfssl/example/async_client.c
-%{_docdir}/wolfssl/example/async_server.c
 %{_docdir}/wolfssl/example/client.c
 %{_docdir}/wolfssl/example/server.c
 %{_docdir}/wolfssl/example/echoclient.c
