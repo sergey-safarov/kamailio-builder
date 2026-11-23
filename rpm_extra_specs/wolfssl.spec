@@ -105,6 +105,7 @@ fi
 %{_libdir}/pkgconfig/wolfssl.pc
 %{_libdir}/libwolfssl.so
 %{_libdir}/cmake/wolfssl
+%{_docdir}/wolfssl/
 
 %changelog
 * Mon Oct 17 2022 Juliusz Sosinowicz <juliusz@wolfssl.com>
