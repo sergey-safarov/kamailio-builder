@@ -6,7 +6,7 @@ Summary: Embedded SSL Library
 Name: wolfssl
 Version: 5.9.4
 Release: 1
-License: GPLv2
+License: GPL-3.0-or-later
 Group: System Environment/Libraries
 BuildRequires: gcc
 BuildRequires: glibc
@@ -17,6 +17,9 @@ BuildRequires: make
 BuildRequires: pkgconfig
 BuildRequires: sed
 BuildRequires: tar
+%if 0%{?rhel} == 10
+BuildRequires: gcc-toolset-15 gcc-toolset-15-gcc-plugin-annobin
+%endif
 URL: http://www.wolfssl.com/
 
 Packager: wolfSSL <support@wolfssl.com>
@@ -41,7 +44,10 @@ you will need to install %{name}-devel.
 %setup -q
 
 %build
-%configure  --enable-pkcs11 --enable-distro --disable-examples --disable-silent-rules
+%if 0%{?rhel} == 10
+source /usr/lib/gcc-toolset/15-env.source
+%endif
+%configure --enable-pkcs11 --enable-distro --disable-examples --disable-silent-rules
 %{__make} %{?_smp_mflags}
 if [ "no" = "yes" ]
 then
@@ -53,9 +59,9 @@ fi
 %install
 %{__rm} -rf %{buildroot}
 %{__make} install  DESTDIR="%{buildroot}" AM_INSTALL_PROGRAM_FLAGS=""
-%{__install} -m 0644 wolfssl/options.h %{buildroot}/usr/include/wolfssl/options.h
 %{__rm} -f %{buildroot}/%{_libdir}/libwolfssl.la
 %{__rm} -f %{buildroot}/%{_libdir}/libwolfssl.a
+%{__cp} wolfssl/options.h %{buildroot}/%{_includedir}/%{name}/
 
 %check
 
@@ -75,14 +81,19 @@ fi
 %{_docdir}/wolfssl/example/server.c
 %{_docdir}/wolfssl/example/echoclient.c
 %{_docdir}/wolfssl/example/echoserver.c
+%{_docdir}/wolfssl/example/ocsp_responder.c
 %{_docdir}/wolfssl/example/sctp-client.c
 %{_docdir}/wolfssl/example/sctp-server.c
 %{_docdir}/wolfssl/example/sctp-client-dtls.c
 %{_docdir}/wolfssl/example/sctp-server-dtls.c
 %{_docdir}/wolfssl/example/tls_bench.c
+%{_docdir}/wolfssl/example/ocsp_responder.c
 %{_docdir}/wolfssl/README.txt
 %{_docdir}/wolfssl/QUIC.md
 %{_libdir}/libwolfssl.so.*
+%{_libdir}/cmake/wolfssl/wolfssl-config-version.cmake
+%{_libdir}/cmake/wolfssl/wolfssl-config.cmake
+%{_libdir}/cmake/wolfssl/wolfssl-targets.cmake
 
 %files devel
 %defattr(-,root,root,-)
@@ -93,6 +104,7 @@ fi
 %{_includedir}/wolfssl/openssl/*.h
 %{_libdir}/pkgconfig/wolfssl.pc
 %{_libdir}/libwolfssl.so
+%{_libdir}/cmake/wolfssl
 
 %changelog
 * Mon Oct 17 2022 Juliusz Sosinowicz <juliusz@wolfssl.com>
@@ -101,8 +113,6 @@ fi
 - Add include of kyber headers
 * Tue Aug 30 2022 Jacob Barthelmeh <jacob@wolfssl.com>
 - Add include of QUIC documentation
-* Wed Aug 17 2022 Anthony Hu <anthony@wolfssl.com>
-- Add a new header sphincs.h.
 * Wed Jul 20 2022 Anthony Hu <anthony@wolfssl.com>
 - Add a new header dilithium.h.
 * Fri Jul 8 2022 Jacob Barthelmeh <jacob@wolfssl.com>
